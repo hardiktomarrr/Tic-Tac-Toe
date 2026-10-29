@@ -140,46 +140,6 @@ def build_app(page: ft.Page) -> None:
     )
     page.overlay.append(game_over_dialog)
 
-    # Viva / Theory Dialog
-    viva_dialog = ft.AlertDialog(
-        modal=False,
-        title=ft.Row([
-            ft.Icon(ft.Icons.SCHOOL, color=ft.Colors.PRIMARY, size=28),
-            ft.Text("AISC Project Theory & PEAS", size=18, weight=ft.FontWeight.BOLD),
-        ]),
-        content=ft.Container(
-            content=ft.Column(
-                [
-                    ft.Text("Artificial Intelligence & Soft Computing (AISC)", weight=ft.FontWeight.BOLD, color=ft.Colors.PRIMARY),
-                    ft.Divider(),
-                    ft.Text("1. PEAS Formalization:", weight=ft.FontWeight.BOLD),
-                    ft.Text("• Performance: Never lose, maximize win speed (10 - depth), delay loss (depth - 10)."),
-                    ft.Text("• Environment: 3x3 board, 2 players, deterministic, discrete, fully observable."),
-                    ft.Text("• Actuators: Place mark ('X' or 'O') on valid empty cell."),
-                    ft.Text("• Sensors: Read 9 board cell states and current turn."),
-                    ft.Divider(),
-                    ft.Text("2. State Space & Search Complexity:", weight=ft.FontWeight.BOLD),
-                    ft.Text("• Reachable legal states: 5,478 positions"),
-                    ft.Text("• Total possible games: 255,168 games"),
-                    ft.Text("• Full game tree size: 549,946 nodes"),
-                    ft.Divider(),
-                    ft.Text("3. Minimax vs Alpha-Beta Pruning:", weight=ft.FontWeight.BOLD),
-                    ft.Text("• Plain Minimax evaluates all 549,946 nodes from empty board."),
-                    ft.Text("• Alpha-Beta with center-corner-edge move ordering reduces search to ~7,865 nodes (98.6% pruning reduction!)"),
-                    ft.Text("• Both algorithms return identical optimal values, proving admissibility."),
-                ],
-                scroll=ft.ScrollMode.ADAPTIVE,
-                spacing=8,
-            ),
-            width=380,
-            height=420,
-        ),
-        actions=[
-            ft.FilledButton("Got It", on_click=lambda e: (setattr(viva_dialog, 'open', False), page.update())),
-        ],
-    )
-    page.overlay.append(viva_dialog)
-
     # -------------------------------------------------------------
     # 3x3 Grid Board Setup
     # -------------------------------------------------------------
@@ -472,13 +432,6 @@ def build_app(page: ft.Page) -> None:
         controller.set_show_evaluations(bool(e.control.value))
         refresh_ui()
 
-    def on_hint_clicked(e=None) -> None:
-        """User requested an optimal move hint."""
-        if controller.game_over or controller.current_turn != controller.human_player:
-            return
-        controller.request_hint()
-        refresh_ui()
-
     def toggle_theme(e=None) -> None:
         """Switch between dark and light theme."""
         page.theme_mode = ft.ThemeMode.LIGHT if is_dark() else ft.ThemeMode.DARK
@@ -488,11 +441,6 @@ def build_app(page: ft.Page) -> None:
         """Clear session scoreboard."""
         controller.reset_scores()
         refresh_ui()
-
-    def open_viva_dialog(e=None) -> None:
-        """Open AISC Viva and theory information modal."""
-        viva_dialog.open = True
-        page.update()
 
     # Bind control callbacks
     theme_icon_btn.on_click = toggle_theme
@@ -515,11 +463,6 @@ def build_app(page: ft.Page) -> None:
             spacing=1,
         ),
         actions=[
-            ft.IconButton(
-                icon=ft.Icons.SCHOOL,
-                tooltip="AISC Project Theory & Viva Questions",
-                on_click=open_viva_dialog,
-            ),
             theme_icon_btn,
         ],
         bgcolor=ft.Colors.SURFACE_CONTAINER_HIGHEST if is_dark() else ft.Colors.SURFACE_CONTAINER_LOW,
@@ -586,15 +529,8 @@ def build_app(page: ft.Page) -> None:
                 on_click=start_new_game_action,
                 style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=10)),
             ),
-            ft.OutlinedButton(
-                "Get Hint",
-                icon=ft.Icons.LIGHTBULB_OUTLINE,
-                on_click=on_hint_clicked,
-                style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=10)),
-            ),
         ],
         alignment=ft.MainAxisAlignment.CENTER,
-        spacing=12,
     )
 
     # Telemetry Stats Card
