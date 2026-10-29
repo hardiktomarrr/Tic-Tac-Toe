@@ -19,7 +19,7 @@ import flet as ft
 
 from game.board import EMPTY, PLAYER_X, PLAYER_O
 from game.controller import GameController
-from ai.agent import DIFFICULTY_EASY, DIFFICULTY_MEDIUM, DIFFICULTY_HARD
+from ai.agent import DIFFICULTY_EASY, DIFFICULTY_HARD
 
 
 def build_app(page: ft.Page) -> None:
@@ -92,9 +92,8 @@ def build_app(page: ft.Page) -> None:
         label="Difficulty Level (FR-08)",
         value=DIFFICULTY_HARD,
         options=[
-            ft.DropdownOption(DIFFICULTY_EASY, text="Easy (Random Moves)"),
-            ft.DropdownOption(DIFFICULTY_MEDIUM, text="Medium (Depth 2 Heuristic)"),
-            ft.DropdownOption(DIFFICULTY_HARD, text="Hard (Full Search · Unbeatable)"),
+            ft.DropdownOption(DIFFICULTY_EASY, text="Random Moves"),
+            ft.DropdownOption(DIFFICULTY_HARD, text="Minimax (Unbeatable)"),
         ],
         width=260,
     )
@@ -327,7 +326,7 @@ def build_app(page: ft.Page) -> None:
             elif "Minimax" in dec.algorithm_name:
                 savings_badge_text.value = "Unpruned tree traversal (Plain Minimax)"
             else:
-                savings_badge_text.value = "Fast heuristic selection"
+                savings_badge_text.value = "Random move selection (No search tree)"
 
         page.update()
 

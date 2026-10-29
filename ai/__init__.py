@@ -7,8 +7,10 @@ from .agent import (
     get_cell_minimax_values,
     AgentDecision,
     DIFFICULTY_EASY,
-    DIFFICULTY_MEDIUM,
     DIFFICULTY_HARD,
+    DIFFICULTY_RANDOM,
+    DIFFICULTY_MINIMAX,
+    DIFFICULTY_MEDIUM,
 )
 
 __all__ = [
@@ -23,6 +25,8 @@ __all__ = [
     "get_cell_minimax_values",
     "AgentDecision",
     "DIFFICULTY_EASY",
-    "DIFFICULTY_MEDIUM",
     "DIFFICULTY_HARD",
+    "DIFFICULTY_RANDOM",
+    "DIFFICULTY_MINIMAX",
+    "DIFFICULTY_MEDIUM",
 ]

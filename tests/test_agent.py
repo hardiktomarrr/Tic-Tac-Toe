@@ -29,7 +29,6 @@ from ai.agent import (
     select_agent_move,
     get_hint_move,
     DIFFICULTY_HARD,
-    DIFFICULTY_MEDIUM,
     DIFFICULTY_EASY,
 )
 from game.controller import GameController
@@ -230,3 +229,19 @@ def test_controller_gameplay_flow():
 
     # Repeated move on occupied cell should be rejected
     assert ctrl.play_human_move(4) is False
+
+
+def test_random_moves_agent_difficulty():
+    """Verify that Easy / Random Moves returns a legal move and single node evaluation."""
+    board = create_board()
+    legal_moves = get_legal_moves(board)
+    decision = select_agent_move(
+        board,
+        agent_player=PLAYER_X,
+        human_player=PLAYER_O,
+        difficulty=DIFFICULTY_EASY,
+    )
+    assert decision.move in legal_moves
+    assert decision.nodes_evaluated == 1
+    assert decision.algorithm_name == "Random Selection"
+

@@ -22,7 +22,6 @@ from ai.agent import (
     get_cell_minimax_values,
     AgentDecision,
     DIFFICULTY_EASY,
-    DIFFICULTY_MEDIUM,
     DIFFICULTY_HARD,
 )
 

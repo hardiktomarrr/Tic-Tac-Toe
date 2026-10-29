@@ -86,7 +86,7 @@ The following benchmark demonstrates the empirical search node counts and execut
 | **FR-05** | Detects win/loss/draw, announces and highlights winning line | Must | ✅ PASS | Glowing green winning line highlight + M3 Dialog announcement. |
 | **FR-06** | Agent can choose moves with plain minimax | Must | ✅ PASS | Implemented in `ai/minimax.py` with baseline node counter. |
 | **FR-07** | Minimax + alpha-beta pruning returning identical values | Must | ✅ PASS | Verified via parameterized equivalence tests across game states. |
-| **FR-08** | Difficulty levels: Easy (random), Medium (depth-2 heuristic), Hard (full) | Should | ✅ PASS | Dropdown selector linked to `ai/agent.py`. |
+| **FR-08** | Difficulty levels: Random Moves and Minimax (Unbeatable) | Should | ✅ PASS | Dropdown selector linked to `ai/agent.py`. |
 | **FR-09** | Switch alpha-beta pruning on/off | Should | ✅ PASS | Switch control toggles pruning and compares live node counters. |
 | **FR-10** | Live telemetry: nodes evaluated and time taken in ms | Should | ✅ PASS | Dedicated M3 stats telemetry card updated on every move. |
 | **FR-11** | Restart button and session scoreboard | Should | ✅ PASS | Reset button + chips tracking Player Wins, Agent Wins, Draws. |

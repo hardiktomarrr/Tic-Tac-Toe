@@ -2,9 +2,8 @@
 AI Agent decision module integrating search strategies and difficulty levels.
 
 Provides high-level decision making for:
-- Easy: Random legal move selection
-- Medium: Depth-limited (depth=2) Alpha-Beta search with heuristic evaluation
-- Hard: Full-depth search (Minimax or Alpha-Beta based on pruning toggle)
+- Random Moves: Random legal move selection
+- Minimax (Unbeatable): Full-depth search (Minimax or Alpha-Beta based on pruning toggle)
 
 Includes move timing via time.perf_counter() and helper utilities for hints
 and cell evaluation overlays.
@@ -23,8 +22,10 @@ from ai.minimax import minimax_search, evaluate_all_moves_minimax
 from ai.alphabeta import alphabeta_search, evaluate_all_moves_alphabeta
 
 DIFFICULTY_EASY = "Easy"
-DIFFICULTY_MEDIUM = "Medium"
 DIFFICULTY_HARD = "Hard"
+DIFFICULTY_RANDOM = DIFFICULTY_EASY
+DIFFICULTY_MINIMAX = DIFFICULTY_HARD
+DIFFICULTY_MEDIUM = "Medium"  # Deprecated: medium level removed
 
 
 @dataclass
@@ -51,7 +52,7 @@ def select_agent_move(
         board: Immutable 9-element tuple representing current board.
         agent_player: Mark of the AI agent ('X' or 'O').
         human_player: Mark of the human player ('X' or 'O').
-        difficulty: One of 'Easy', 'Medium', 'Hard'.
+        difficulty: 'Easy' / 'Random Moves' or 'Hard' / 'Minimax (Unbeatable)'.
         use_pruning: If True, uses Alpha-Beta pruning; if False, uses Plain Minimax.
         
     Returns:
@@ -69,8 +70,8 @@ def select_agent_move(
 
     start_time = time.perf_counter()
 
-    if difficulty == DIFFICULTY_EASY:
-        # Easy: Uniformly pick a random legal move
+    if difficulty in (DIFFICULTY_EASY, "Random Moves", "random"):
+        # Uniformly pick a random legal move
         move = random.choice(legal_moves)
         elapsed_ms = (time.perf_counter() - start_time) * 1000.0
         return AgentDecision(
@@ -81,25 +82,8 @@ def select_agent_move(
             algorithm_name="Random Selection",
         )
 
-    elif difficulty == DIFFICULTY_MEDIUM:
-        # Medium: Depth-limited (depth=2) alpha-beta with heuristic
-        move, score, nodes = alphabeta_search(
-            board,
-            agent_player=agent_player,
-            human_player=human_player,
-            max_depth=2,
-        )
-        elapsed_ms = (time.perf_counter() - start_time) * 1000.0
-        return AgentDecision(
-            move=move,
-            score=score,
-            nodes_evaluated=nodes,
-            time_taken_ms=elapsed_ms,
-            algorithm_name="Alpha-Beta (Depth 2 Heuristic)",
-        )
-
     else:
-        # Hard: Full-depth search (unbeatable)
+        # Full-depth search (unbeatable)
         if use_pruning:
             move, score, nodes = alphabeta_search(
                 board,
